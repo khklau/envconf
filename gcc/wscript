@@ -1,25 +1,33 @@
-from subprocess import Popen, PIPE
 from waflib.Configure import conf
-from waflib.extras.layout import Solution
+from waflib.extras.cpuinfo import find_dcache_line_size, find_pointer_size
 
 def options(optCtx):
     optCtx.add_option('--mode', type='string',
-            default='release', dest='mode',
+	    default='release', dest='mode',
 	    help='Build mode, e.g. release, debug')
     optCtx.add_option('--platform', type='string',
-            default='', dest='build_mode',
+	    default='%sbit' % find_pointer_size(), dest='platform',
 	    help='Build platform, e.g. 32bit, 64bit')
 
 @conf
 def check_hardware(self):
-    self.load('cpuinfo')
-    self.env.append_value('CXXFLAGS', ['-DLEVEL1_DCACHE_LINESIZE=%s' % self.find_dcache_line_size()])
-    self.env.append_value('CXXFLAGS', ['-m%s' % self.find_pointer_size()])
+    self.start_msg('Detecting CPU dcache line size')
+    self.env.dcache_line_size = find_dcache_line_size()
+    if self.env.dcache_line_size is None:
+	self.fatal('could not be detected')
+    else:
+	self.end_msg('%s bytes' % self.env.dcache_line_size)
+    self.start_msg('Detecting native pointer size')
+    self.env.pointer_size = find_pointer_size()
+    if self.env.pointer_size is None:
+	self.fatal('could not be detected')
+    else:
+	self.end_msg('%s bit' % self.env.pointer_size)
 
 def configure(confCtx):
-    solution = Solution.fromContext(confCtx)
-    confCtx.env.solution = solution
     confCtx.check_hardware()
+    confCtx.env.append_value('CXXFLAGS', ['-DLEVEL1_DCACHE_LINESIZE=%s' % confCtx.env.dcache_line_size])
+    confCtx.env.append_value('CXXFLAGS', ['-m%s' % confCtx.env.pointer_size])
     confCtx.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2', '-ggdb',
 	    '-fno-builtin-malloc', '-fno-builtin-calloc', '-fno-builtin-realloc', 
 	    '-fno-builtin-free', '-pthread', '-Wl,-z,origin'])
