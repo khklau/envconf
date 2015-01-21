@@ -1,7 +1,7 @@
 from waflib.ConfigSet import ConfigSet
 
 def options(optCtx):
-    optCtx.recurse('cxx')
+    optCtx.recurse('gcc')
 
 def configure(confCtx):
-    confCtx.recurse('cxx')
+    confCtx.recurse('gcc')
