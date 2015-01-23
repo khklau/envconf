@@ -1,5 +1,8 @@
+import json
+import os
 from waflib.Configure import conf
-from waflib.extras.cpuinfo import find_dcache_line_size, find_pointer_size
+from waflib.extras.cpuinfo import find_dcache_line_size, find_pointer_size, find_cpu_isa
+import mandatory, release, debug, x86, x86_64
 
 def options(optCtx):
     optCtx.add_option('--mode', type='string',
@@ -11,6 +14,12 @@ def options(optCtx):
 
 @conf
 def check_hardware(self):
+    self.start_msg('Detecting CPU instruction set')
+    self.env.cpu_isa = find_cpu_isa()
+    if self.env.cpu_isa is None:
+	self.fatal('could not be detected')
+    else:
+	self.end_msg(self.env.cpu_isa)
     self.start_msg('Detecting CPU dcache line size')
     self.env.dcache_line_size = find_dcache_line_size()
     if self.env.dcache_line_size is None:
@@ -26,6 +35,28 @@ def check_hardware(self):
 
 def configure(confCtx):
     confCtx.check_hardware()
+    config = []
+    config.append(json.loads(mandatory.configure(confCtx)))
+
+    if confCtx.options.mode.lower() == 'debug':
+	config.append(json.loads(debug.configure(confCtx)))
+    elif confCtx.options.mode.lower() == 'release':
+	config.append(json.loads(release.configure(confCtx)))
+
+    if confCtx.env.cpu_isa.lower() == 'x86_64':
+	if confCtx.options.platform.lower() == '32bit':
+	    config.append(json.loads(x86.configure(confCtx)))
+	elif confCtx.options.platform.lower() == '64bit':
+	    config.append(json.loads(x86_64.configure(confCtx)))
+
+    os.makedirs(confCtx.path.get_bld().abspath())
+    outfile = open(confCtx.path.get_bld().make_node('gcc.json').abspath(), 'w')
+    try:
+	outfile.write(json.dumps(config, indent=True))
+	outfile.write('\n')
+    finally:
+	outfile.close()
+
     confCtx.env.append_value('CXXFLAGS', ['-DLEVEL1_DCACHE_LINESIZE=%s' % confCtx.env.dcache_line_size])
     confCtx.env.append_value('CXXFLAGS', ['-m%s' % confCtx.env.pointer_size])
     confCtx.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2', '-ggdb',
