@@ -12,7 +12,6 @@ __template = Template('''
 	[
 	    "-Wall",
 	    "-Wextra",
-	    "-Weffc++",
 	    "-pthread",
 	    "-Wl,-z,origin",
 	    "-pipe",
