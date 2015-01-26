@@ -56,9 +56,3 @@ def configure(confCtx):
 	outfile.write('\n')
     finally:
 	outfile.close()
-
-    confCtx.env.append_value('CXXFLAGS', ['-DLEVEL1_DCACHE_LINESIZE=%s' % confCtx.env.dcache_line_size])
-    confCtx.env.append_value('CXXFLAGS', ['-m%s' % confCtx.env.pointer_size])
-    confCtx.env.append_value('CXXFLAGS', ['-Wall', '-Wextra', '-O2', '-ggdb',
-	    '-fno-builtin-malloc', '-fno-builtin-calloc', '-fno-builtin-realloc', 
-	    '-fno-builtin-free', '-pthread', '-Wl,-z,origin'])
