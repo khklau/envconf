@@ -13,6 +13,7 @@ __template = Template('''
 	    "-Wall",
 	    "-Wextra",
 	    "-pthread",
+	    "-Wl,rpath=$$ORIGIN",
 	    "-Wl,-z,origin",
 	    "-pipe",
 	    "-DLEVEL1_DCACHE_LINESIZE=$dcache_line_size",
