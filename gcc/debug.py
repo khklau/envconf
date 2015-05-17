@@ -4,17 +4,19 @@
 from string import Template
 
 __template = Template('''
-{
-    "append_env_var":
+[
     {
-	"env_var" : "CXXFLAGS",
-	"value_list":
-	[
-	    "-pg",
-	    "-ggdb"
-	]
+	"append_env_var":
+	{
+	    "env_var" : "CXXFLAGS",
+	    "value_list":
+	    [
+		"-pg",
+		"-ggdb"
+	    ]
+	}
     }
-}
+]
 ''')
 
 def configure(confCtx):

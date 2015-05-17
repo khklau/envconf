@@ -36,18 +36,18 @@ def check_hardware(self):
 def configure(confCtx):
     confCtx.check_hardware()
     config = []
-    config.append(json.loads(mandatory.configure(confCtx)))
+    config.extend(json.loads(mandatory.configure(confCtx)))
 
     if confCtx.options.mode.lower() == 'debug':
-	config.append(json.loads(debug.configure(confCtx)))
+	config.extend(json.loads(debug.configure(confCtx)))
     elif confCtx.options.mode.lower() == 'release':
-	config.append(json.loads(release.configure(confCtx)))
+	config.extend(json.loads(release.configure(confCtx)))
 
     if confCtx.env.cpu_isa.lower() == 'x86_64':
 	if confCtx.options.platform.lower() == '32bit':
-	    config.append(json.loads(x86.configure(confCtx)))
+	    config.extend(json.loads(x86.configure(confCtx)))
 	elif confCtx.options.platform.lower() == '64bit':
-	    config.append(json.loads(x86_64.configure(confCtx)))
+	    config.extend(json.loads(x86_64.configure(confCtx)))
 
     os.makedirs(confCtx.path.get_bld().abspath())
     outfile = open(confCtx.path.get_bld().make_node('gcc.json').abspath(), 'w')

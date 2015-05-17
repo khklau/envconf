@@ -4,27 +4,33 @@
 from string import Template
 
 __template = Template('''
-{
-    "append_env_var":
+[
     {
-	"env_var" : "CXXFLAGS",
-	"value_list":
-	[
-	    "-Wall",
-	    "-Wextra",
-	    "-pthread",
-	    "-Wl,rpath=$$ORIGIN",
-	    "-Wl,-z,origin",
-	    "-pipe",
-	    "-DLEVEL1_DCACHE_LINESIZE=$dcache_line_size",
-	    "-fstack-protector-all",
-	    "-fno-builtin-malloc",
-	    "-fno-builtin-calloc",
-	    "-fno-builtin-realloc",
-	    "-fno-builtin-free"
-	]
+	"append_env_var":
+	{
+	    "env_var" : "CXXFLAGS",
+	    "value_list":
+	    [
+		"-Wall",
+		"-Wextra",
+		"-pthread",
+		"-Wl,rpath=$$ORIGIN",
+		"-Wl,-z,origin",
+		"-std=c++11",
+		"-Wno-unused-local-typedefs",
+		"-Wno-unused-but-set-parameter",
+		"-Wno-maybe-uninitialized",
+		"-pipe",
+		"-DLEVEL1_DCACHE_LINESIZE=$dcache_line_size",
+		"-fstack-protector-all",
+		"-fno-builtin-malloc",
+		"-fno-builtin-calloc",
+		"-fno-builtin-realloc",
+		"-fno-builtin-free"
+	    ]
+	}
     }
-}
+]
 ''')
 
 def configure(confCtx):
