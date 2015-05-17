@@ -29,7 +29,19 @@ __template = Template('''
 		"-fno-builtin-free"
 	    ]
 	}
+    },
+    {
+	"append_env_var":
+	{
+	    "env_var" : "LDFLAGS",
+	    "value_list":
+	    [
+		"-lrt",
+		"-lpthread"
+	    ]
+	}
     }
+
 ]
 ''')
 
