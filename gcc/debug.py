@@ -12,6 +12,7 @@ __template = Template('''
 	    "value_list":
 	    [
 		"-pg",
+		"-g3",
 		"-ggdb"
 	    ]
 	}
