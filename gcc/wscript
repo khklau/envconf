@@ -49,7 +49,8 @@ def configure(confCtx):
 	elif confCtx.options.platform.lower() == '64bit':
 	    config.extend(json.loads(x86_64.configure(confCtx)))
 
-    os.makedirs(confCtx.path.get_bld().abspath())
+    if not os.access(confCtx.path.get_bld().abspath(), os.F_OK):
+	os.makedirs(confCtx.path.get_bld().abspath())
     outfile = open(confCtx.path.get_bld().make_node('gcc.json').abspath(), 'w')
     try:
 	outfile.write(json.dumps(config, indent=True))
