@@ -16,6 +16,7 @@ __template = Template('''
 		"-pthread",
 		"-Wl,rpath=$$ORIGIN",
 		"-Wl,-z,origin",
+		"-Wl,--eh-frame-hdr",
 		"-std=c++11",
 		"-Wno-unused-local-typedefs",
 		"-Wno-unused-but-set-parameter",
