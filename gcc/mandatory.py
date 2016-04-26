@@ -13,7 +13,6 @@ __template = Template('''
 	    [
 		"-Wall",
 		"-Wextra",
-		"-pthread",
 		"-Wl,rpath=$$ORIGIN",
 		"-Wl,-z,origin",
 		"-Wl,--eh-frame-hdr",
@@ -38,7 +37,7 @@ __template = Template('''
 	    "value_list":
 	    [
 		"-lrt",
-		"-lpthread"
+		"-pthread"
 	    ]
 	}
     }
