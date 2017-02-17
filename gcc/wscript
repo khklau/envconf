@@ -2,7 +2,7 @@ import json
 import os
 from waflib.Configure import conf
 from waflib.extras.cpuinfo import find_dcache_line_size, find_pointer_size, find_cpu_isa
-import mandatory, release, debug, x86, x86_64
+import mandatory, release, profile, debug, x86, x86_64
 
 def options(optCtx):
     optCtx.add_option('--mode', type='string',
@@ -42,6 +42,8 @@ def configure(confCtx):
 	config.extend(json.loads(debug.configure(confCtx)))
     elif confCtx.options.mode.lower() == 'release':
 	config.extend(json.loads(release.configure(confCtx)))
+    elif confCtx.options.mode.lower() == 'profile':
+	config.extend(json.loads(profile.configure(confCtx)))
 
     if confCtx.env.cpu_isa.lower() == 'x86_64':
 	if confCtx.options.platform.lower() == '32bit':

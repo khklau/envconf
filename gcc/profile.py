@@ -11,8 +11,20 @@ __template = Template('''
 	    "env_var" : "CXXFLAGS",
 	    "value_list":
 	    [
-		"-ggdb3",
-                "-DDEBUG"
+		"-O2",
+		"-ggdb",
+		"-pg",
+                "-DNDEBUG"
+	    ]
+	}
+    },
+    {
+	"append_env_var":
+	{
+	    "env_var" : "LDFLAGS",
+	    "value_list":
+	    [
+		"-pg"
 	    ]
 	}
     }
