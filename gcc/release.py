@@ -12,7 +12,8 @@ __template = Template('''
 	    "value_list":
 	    [
 		"-O2",
-		"-ggdb"
+		"-ggdb",
+                "-DNDEBUG"
 	    ]
 	}
     }
