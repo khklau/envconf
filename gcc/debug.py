@@ -11,9 +11,8 @@ __template = Template('''
 	    "env_var" : "CXXFLAGS",
 	    "value_list":
 	    [
-		"-pg",
-		"-g3",
-		"-ggdb"
+		"-ggdb3",
+                "-DDEBUG"
 	    ]
 	}
     }
